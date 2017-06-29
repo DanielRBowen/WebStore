@@ -124,14 +124,24 @@ namespace WebStore.Controllers
                 user.Cart.Add(productsTable.FirstOrDefault(product => product.Id == productId));
             }
 
+            decimal taxRate = (decimal)0.1;
+            decimal total = 0;
+
+            foreach (var product in productsTable)
+            {
+                total += product.Price;
+            }
+            decimal tax = total * taxRate;
+            total += tax;
+
             var products = user.Cart.Distinct().ToList();
             var viewModel = new CheckoutViewModel
             {
                 Products = products,
                 Quantities = Utilities.CalculateQuantities(products, productIds),
-                Total = 1000000000
+                Tax = tax,
+                Total = total
             };
-
             return View(viewModel);
         }
 
@@ -155,12 +165,23 @@ namespace WebStore.Controllers
                 user.Cart.Add(productsTable.FirstOrDefault(product => product.Id == productId));
             }
 
+            decimal taxRate = (decimal)0.1;
+            decimal total = 0;
+
+            foreach (var product in productsTable)
+            {
+                total += product.Price;
+            }
+            decimal tax = total * taxRate;
+            total += tax;
+
             var products = user.Cart.Distinct().ToList();
             var viewModel = new CheckoutViewModel
             {
                 Products = products,
                 Quantities = Utilities.CalculateQuantities(products, productIds),
-                Total = 1000000000
+                Tax = tax,
+                Total = total
             };
 
             return View(viewModel);
