@@ -1,0 +1,60 @@
+@using WebStore.ViewModels;
+@using WebStore.Controllers;
+@model CartViewModel
+@{
+    var products = Model.Products;
+    var quantities = Model.Quantities;
+    ViewData["Title"] = "Cart";
+}
+
+<div class="container">
+    @if (products.Count == 0)
+    {
+        <h2>Nothing is in the Cart</h2>
+    }
+    else
+    {
+        @for (int index = 0; index < products.Count(); index++)
+        {
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="media">
+                        <div class="media-left">
+                            @{
+                                var image = products[index].StoreItemImages.FirstOrDefault();
+                            }
+                            @if (image != null)
+                            {
+                                <img class="media-object" src="@Url.Action(nameof(ImagesController.Thumbnail), "Images", values: new { id = image.ImageId })" />
+                            }
+                            else
+                            {
+                                <img class="media-object" src="~/images/no-image.jpg" />
+                            }
+                        </div>
+                        <div class="media-body">
+                            <h3 class="media-heading">@Html.DisplayFor(modelItem => products[index].Name)</h3>
+                            <h6>@Html.DisplayFor(modelItem => products[index].Description)</h6>
+                            <h4>@Html.DisplayFor(modelItem => products[index].Price)</h4>
+                            <form class="form-inline" method="post" asp-action="UpdateQuantity">
+                                <input type="hidden" name="id" value="@products[index].Id" />
+                                <input type="number" name="quantity" value="@quantities[index]" placeholder="Quantity" class="form-control" style="width: 40px;" />
+                                <input type="submit" value="Update Quantity" class="btn btn-primary" />
+                            </form>
+                            <form class="form-inline" method="post" asp-action="RemoveFromCart">
+                                <input type="hidden" name="id" value="@products[index].Id" />
+                                <input type="submit" value="Remove" class="btn btn-primary" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         }
+                                    <form class="form-inline" method="post" asp-action="SaveCart">
+                                        <input type="submit" value="Save Cart" class="btn btn-primary"/>
+                                    </form>
+                                    <form class="form-inline" method="post">
+                                        <a asp-area="" asp-controller="Home" asp-action="Checkout"><input type="button" value="Check Out" class="btn btn-primary" /></a>
+                                    </form>
+                                }
+</div>

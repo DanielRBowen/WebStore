@@ -1,0 +1,49 @@
+@using WebStore.ViewModels;
+@using WebStore.Controllers;
+@model CheckoutViewModel
+@{
+    var products = Model.Products;
+    var quantities = Model.Quantities;
+    ViewData["Title"] = "Checkout";
+}
+
+<head>
+    <link href="~/css/print.css" type="text/css" rel="stylesheet" media="print"/>
+</head>
+
+<h2>Checkout</h2>
+
+<div class="container">
+        @for (int index = 0; index < products.Count(); index++)
+        {
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="media">
+                        <div class="media-left">
+                            @*@{
+                                var image = products[index].StoreItemImages.FirstOrDefault();
+                            }
+                            @if (image != null)
+                            {
+                                <img class="media-object" src="@Url.Action(nameof(ImagesController.Thumbnail), "Images", values: new { id = image.ImageId })" />
+                            }
+                            else
+                            {
+                                <img class="media-object" src="~/images/no-image.jpg" />
+                            }*@
+                        </div>
+                        <div class="media-body">
+                            <h3 class="media-heading">@Html.DisplayFor(modelItem => products[index].Name)</h3>
+                            <h6>@Html.DisplayFor(modelItem => products[index].Description)</h6>
+                            <h4>@Html.DisplayFor(modelItem => products[index].Price)</h4>
+                            <h1>Quantity: @Html.DisplayFor(modelItem => quantities[index])</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                                }
+                                <h1>@Html.DisplayForModel(Model.Total)</h1>
+                                    <form class="form-inline" method="post">
+                                        <a asp-area="" asp-controller="Home" asp-action="Confirmation"><input type="button" value="Confirm Purchase" class="btn btn-primary" /></a>
+                                    </form>
+</div>

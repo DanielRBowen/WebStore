@@ -1,0 +1,94 @@
+@using WebStore.ViewModels;
+@using WebStore.Controllers;
+@model BrowseProductsViewModel
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="container">
+    <div class="col-md-3">
+        <div class="form-group">
+            <ul class="nav nav-pills nav-stacked">
+                <li class="@(Model.CategoryId == null ? "active" : null)"><a href="@Url.Action(nameof(ProductsController.Index), "Products")">All Products</a></li>
+                @foreach (var category in Model.Categories)
+            {
+                    <li class="@(category.Id == Model.CategoryId ? "active" : null)">
+                        <a href="@Url.Action(nameof(ProductsController.Index), "Products", new { categoryId = category.Id, searchQuery = Model.SearchQuery })">@category.Name</a>
+                    </li>
+            }
+            </ul>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form asp-action="Index" method="get">
+                    <div>
+                        <label for="searchQuery">Find by Name or Description: </label>
+                        <input class="form-control" type="text" id="searchQuery" name="searchQuery" value="@Model.SearchQuery" />
+                        <input type="submit" value="Search" class="btn btn-default btn-block" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        @foreach (var product in Model.Products)
+        {
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="media">
+                        <div class="media-left">
+                            <a asp-action="View" asp-route-id="@product.Id">
+                            @{
+                                var image = product.StoreItemImages.FirstOrDefault();
+                            }
+                            @if (image != null)
+                            {
+                                <img class="media-object" src="@Url.Action(nameof(ImagesController.Thumbnail), "Images", values: new { id = image.ImageId })" />
+                            }
+                            else
+                            {
+                                <img class="media-object" src="~/images/no-image.jpg" />
+                            }
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <a asp-action="View" asp-route-id="@product.Id">
+                                <h3 class="media-heading">@Html.DisplayFor(modelItem => product.Name)</h3>
+                            </a>
+                            <h6>@Html.DisplayFor(modelItem => product.Description)</h6>
+                            <h4>@Html.DisplayFor(modelItem => product.Price)</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        }
+
+        @{
+            var prevDisabled = !Model.Products.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.Products.HasNextPage ? "disabled" : "";
+        }
+
+        <nav aria-label="...">
+            <ul class="pager">
+                <li>
+                    <a asp-action="Index"
+                       asp-route-categoryId="@Model.CategoryId"
+                       asp-route-searchQuery="@Model.SearchQuery"
+                       asp-route-page="@(Model.Products.PageIndex - 1)"
+                       class="btn btn-default @prevDisabled">Previous</a>
+                </li>
+                <li>
+                    <a asp-action="Index"
+                       asp-route-categoryId="@Model.CategoryId"
+                       asp-route-searchQuery="@Model.SearchQuery"
+                       asp-route-page="@(Model.Products.PageIndex + 1)"
+                       class="btn btn-default @nextDisabled">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

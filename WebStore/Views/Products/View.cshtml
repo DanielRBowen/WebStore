@@ -1,0 +1,34 @@
+@using WebStore.ViewModels;
+@using WebStore.Controllers;
+@model ViewProductViewModel
+@{
+    var product = Model.Product;
+    ViewData["Title"] = product.Name;
+}
+
+<div class="media" style="margin-top: 20px;">
+    <div class="media-left">
+        @{
+            var image = product.StoreItemImages.FirstOrDefault();
+        }
+        @if (image != null)
+        {
+            <img class="media-object" src="@Url.Action(nameof(ImagesController.Index), "Images", values: new { id = image.ImageId })" />
+        }
+        else
+        {
+            <img class="media-object" src="~/images/no-image.jpg" />
+        }
+    </div>
+    <div class="media-body">
+        <h2 class="media-heading">@ViewData["Title"]</h2>
+        <p>
+            @product.Description
+        </p>
+        <form class="form-inline" method="post" asp-action="AddToCart">
+            <input type="hidden" name="id" value="@product.Id"/>
+            <input type="number" name="quantity" value="1" placeholder="Quantity" class="form-control" style="width: 40px;"/>
+            <input type="submit" value="Add To Cart" class="btn btn-primary"/>
+        </form>
+    </div>
+</div>
