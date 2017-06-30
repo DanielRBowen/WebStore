@@ -124,6 +124,7 @@ namespace WebStore.Controllers
                 user.Cart.Add(productsTable.FirstOrDefault(product => product.Id == productId));
             }
 
+            //string rawTaxRate = Request.Host[];
             decimal taxRate = (decimal)0.1;
             decimal total = 0;
 

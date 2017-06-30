@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using WebStore.Models;
 
 namespace WebStore.ViewModels
 {

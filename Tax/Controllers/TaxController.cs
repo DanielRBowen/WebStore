@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Tax.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -27,7 +24,7 @@ namespace Tax.Controllers
 
 
         // GET: api/values
-        [HttpGet("{zipcode}", Name = "GetTaxByZip" )]
+        [HttpGet("{zipcode}", Name = "GetTaxByZip" )]   
         public IActionResult GetTaxByZip(decimal zipcode)
         {
             var taxZone = _context.TaxZones.FirstOrDefault(t => t.ZipCode == zipcode);
