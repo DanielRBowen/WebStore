@@ -106,12 +106,31 @@ namespace WebStore.Controllers
 
         public IActionResult Checkout()
         {
+            var viewModel = CreateCheckoutViewModel();
+
+            if (viewModel == null)
+            {
+                TempData["SuccessMessage"] = "You must register to check out or save.";
+                return RedirectToAction(nameof(CartController.Cart), "Cart");
+            }
+
+            return View(viewModel);
+        }
+
+        public IActionResult Confirmation()
+        {
+            var viewModel = CreateCheckoutViewModel();
+
+            return View(viewModel);
+        }
+
+        public CheckoutViewModel CreateCheckoutViewModel()
+        {
             var user = HttpContext.Session.Get<User>("User");
 
             if (user == null)
             {
-                TempData["SuccessMessage"] = "You must register to check out or save.";
-                return RedirectToAction(nameof(CartController.Cart), "Cart");
+                return null;
             }
 
             var shoppingCart = HttpContext.Session.Get<ShoppingCart>("ShoppingCart");
@@ -143,49 +162,8 @@ namespace WebStore.Controllers
                 Tax = tax,
                 Total = total
             };
-            return View(viewModel);
-        }
 
-        public IActionResult Confirmation()
-        {
-            var user = HttpContext.Session.Get<User>("User");
-
-            if (user == null)
-            {
-                TempData["SuccessMessage"] = "You must register to check out or save.";
-                return RedirectToAction(nameof(CartController.Cart), "Cart");
-            }
-
-            var shoppingCart = HttpContext.Session.Get<ShoppingCart>("ShoppingCart");
-
-            var productIds = shoppingCart.ProductIds.ToList();
-            var productsTable = new List<StoreItem>();
-            productsTable = _context.StoreItems.ToList();
-            foreach (var productId in productIds)
-            {
-                user.Cart.Add(productsTable.FirstOrDefault(product => product.Id == productId));
-            }
-
-            decimal taxRate = (decimal)0.1;
-            decimal total = 0;
-
-            foreach (var product in productsTable)
-            {
-                total += product.Price;
-            }
-            decimal tax = total * taxRate;
-            total += tax;
-
-            var products = user.Cart.Distinct().ToList();
-            var viewModel = new CheckoutViewModel
-            {
-                Products = products,
-                Quantities = Utilities.CalculateQuantities(products, productIds),
-                Tax = tax,
-                Total = total
-            };
-
-            return View(viewModel);
+            return viewModel;
         }
 
         public IActionResult Cart() => RedirectToAction(nameof(CartController.Cart), "Cart");
