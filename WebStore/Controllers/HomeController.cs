@@ -1,8 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using WebStore.API;
 using WebStore.Data;
 using WebStore.Models;
 using WebStore.ViewModels;
@@ -104,9 +109,9 @@ namespace WebStore.Controllers
             }
         }
 
-        public IActionResult Checkout()
+        public async Task<IActionResult> Checkout()
         {
-            var viewModel = CreateCheckoutViewModel();
+            var viewModel = await CreateCheckoutViewModel();
 
             if (viewModel == null)
             {
@@ -117,14 +122,14 @@ namespace WebStore.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Confirmation()
+        public async Task<IActionResult> Confirmation()
         {
-            var viewModel = CreateCheckoutViewModel();
+            var viewModel = await CreateCheckoutViewModel();
 
             return View(viewModel);
         }
 
-        public CheckoutViewModel CreateCheckoutViewModel()
+        public async Task<CheckoutViewModel> CreateCheckoutViewModel()
         {
             var user = HttpContext.Session.Get<User>("User");
 
@@ -137,24 +142,38 @@ namespace WebStore.Controllers
 
             var productIds = shoppingCart.ProductIds.ToList();
             var productsTable = new List<StoreItem>();
-            productsTable = _context.StoreItems.ToList();
+            productsTable = await _context.StoreItems.ToListAsync();
+
             foreach (var productId in productIds)
             {
                 user.Cart.Add(productsTable.FirstOrDefault(product => product.Id == productId));
             }
 
-            //string rawTaxRate = Request.Host[];
-            decimal taxRate = (decimal)0.1;
+            var url = Url.Action(nameof(TaxesController.GetTaxRate), "Taxes", new { zipcode = 84037 }, Request.Scheme);
+            var webRequest = WebRequest.Create(new Uri(url, UriKind.Absolute));
+            decimal taxRate;
+
+            using (var response = await webRequest.GetResponseAsync())
+            using (var inputStream = response.GetResponseStream())
+            using (var streamReader = new StreamReader(inputStream))
+            {
+                var jsonTextReader = new JsonTextReader(streamReader);
+                var nullableTaxRate = jsonTextReader.ReadAsDecimal();
+                taxRate = nullableTaxRate.GetValueOrDefault();
+            }
+
             decimal total = 0;
 
             foreach (var product in productsTable)
             {
                 total += product.Price;
             }
+
             decimal tax = total * taxRate;
             total += tax;
 
             var products = user.Cart.Distinct().ToList();
+
             var viewModel = new CheckoutViewModel
             {
                 Products = products,

@@ -35,6 +35,8 @@ namespace WebStore
             // Add framework services.
             services.AddMvc();
 
+            services.AddDbContext<TaxDbContext>(opt => opt.UseInMemoryDatabase());
+
             // Adds a default in-memory implementation of IDistributedCache.
             services.AddDistributedMemoryCache();
 
