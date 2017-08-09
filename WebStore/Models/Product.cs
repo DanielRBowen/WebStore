@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebStore.Models
 {
-    public class StoreItem
+    public class Product
     {
         [Key]
         public int Id { get; set; }
@@ -30,6 +30,6 @@ namespace WebStore.Models
 
         public Company Company { get; set; }
 
-        public virtual ICollection<StoreItemImage> StoreItemImages { get; set; }
+        public virtual ICollection<ProductImage> ProductImages { get; set; }
     }
 }

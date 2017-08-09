@@ -7,14 +7,14 @@ namespace WebStore.Data
     {
         public StoreContext(DbContextOptions<StoreContext> options) : base(options) { }
 
-        public DbSet<StoreItem> StoreItems { get; set; }
+        public DbSet<Product> Products { get; set; }
         public DbSet<Company> Companies { get; set; }
 
         public DbSet<User> Users { get; set; }
 
         public DbSet<Image> Images { get; set; }
 
-        public DbSet<StoreItemImage> StoreItemImages { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
 
         public DbSet<Catagory> Catagories { get; set; }
 
@@ -24,14 +24,14 @@ namespace WebStore.Data
             //modelBuilder.Entity<StoreItem>().ToTable("StoreItem");
             //modelBuilder.Entity<Company>().ToTable("Company");
 
-            var storeItemImages = modelBuilder.Entity<StoreItemImage>();
-            storeItemImages.HasKey(storeItemImage => new { storeItemImage.StoreItemId, storeItemImage.ImageId });
+            var productImages = modelBuilder.Entity<ProductImage>();
+            productImages.HasKey(storeItemImage => new { storeItemImage.ProductId, storeItemImage.ImageId });
 
-            storeItemImages.HasOne(storeItemImage => storeItemImage.StoreItem)
-                .WithMany(storeItem => storeItem.StoreItemImages)
-                .HasForeignKey(storeItemImage => storeItemImage.StoreItemId);
+            productImages.HasOne(storeItemImage => storeItemImage.Product)
+                .WithMany(storeItem => storeItem.ProductImages)
+                .HasForeignKey(storeItemImage => storeItemImage.ProductId);
 
-            storeItemImages.HasOne(storeItemImage => storeItemImage.Image)
+            productImages.HasOne(storeItemImage => storeItemImage.Image)
                 .WithMany()
                 .HasForeignKey(storeItemImage => storeItemImage.ImageId);
 

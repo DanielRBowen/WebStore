@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebStore.Models
 {
-    public class StoreItemImage
+    public class ProductImage
     {
         [Key]
         [Column(Order = 0)]
-        public int StoreItemId { get; set; }
+        public int ProductId { get; set; }
 
-        public virtual StoreItem StoreItem { get; set; }
+        public virtual Product Product { get; set; }
 
         [Key]
         [Column(Order = 1)]

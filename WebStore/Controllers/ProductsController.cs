@@ -33,9 +33,9 @@ namespace WebStore.Controllers
             var catagories = StoreContext.Catagories.AsNoTracking().ToList();
 
             var productsQuery =
-                from storeItem in StoreContext.StoreItems
+                from storeItem in StoreContext.Products
                     .AsNoTracking()
-                    .Include(storeItem0 => storeItem0.StoreItemImages)
+                    .Include(storeItem0 => storeItem0.ProductImages)
                 select storeItem;
 
             if (!string.IsNullOrWhiteSpace(searchQuery))
@@ -53,7 +53,7 @@ namespace WebStore.Controllers
             productsQuery = productsQuery.OrderBy(product => product.Name);
 
             const int pageSize = 4;
-            var products = await PaginatedList<StoreItem>.CreateAsync(productsQuery, page ?? 1, pageSize);
+            var products = await PaginatedList<Product>.CreateAsync(productsQuery, page ?? 1, pageSize);
 
             var viewModel = new BrowseProductsViewModel
             {
@@ -69,8 +69,8 @@ namespace WebStore.Controllers
         public async Task<IActionResult> View(int id)
         {
             var productQuery =
-                from product0 in StoreContext.StoreItems.AsNoTracking()
-                    .Include(product0 => product0.StoreItemImages)
+                from product0 in StoreContext.Products.AsNoTracking()
+                    .Include(product0 => product0.ProductImages)
                 where product0.Id == id
                 select product0;
 

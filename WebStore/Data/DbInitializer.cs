@@ -12,7 +12,7 @@ namespace WebStore.Data
             context.Database.EnsureCreated();
 
             // Look for any store items.
-            if (context.StoreItems.Any())
+            if (context.Products.Any())
             {
                 return; // DB has been seeded
             }
@@ -34,24 +34,24 @@ namespace WebStore.Data
             var cpuCatagory = new Catagory { Name = "CPU" };
             context.Catagories.Add(cpuCatagory);
 
-            var storeItems = context.StoreItems;
+            var storeItems = context.Products;
 
-            var storeItem1 = new StoreItem { Name = "RAM1", Catagory = ramCatagory, Price = 1, Description = "This is RAM 1", Company = companies[0] };
+            var storeItem1 = new Product { Name = "RAM1", Catagory = ramCatagory, Price = 1, Description = "This is RAM 1", Company = companies[0] };
             storeItems.Add(storeItem1);
 
-            var storeItem2 = new StoreItem { Name = "RAM2", Catagory = ramCatagory, Price = 1, Description = "This is RAM 2", Company = companies[0] };
+            var storeItem2 = new Product { Name = "RAM2", Catagory = ramCatagory, Price = 1, Description = "This is RAM 2", Company = companies[0] };
             storeItems.Add(storeItem2);
 
-            var storeItem3 = new StoreItem { Name = "RAM3", Catagory = ramCatagory, Price = 1, Description = "This is RAM 3", Company = companies[0] };
+            var storeItem3 = new Product { Name = "RAM3", Catagory = ramCatagory, Price = 1, Description = "This is RAM 3", Company = companies[0] };
             storeItems.Add(storeItem3);
 
-            var storeItem4 = new StoreItem { Name = "CPU1", Catagory = cpuCatagory, Price = 2, Description = "This is CPU 1", Company = companies[1] };
+            var storeItem4 = new Product { Name = "CPU1", Catagory = cpuCatagory, Price = 2, Description = "This is CPU 1", Company = companies[1] };
             storeItems.Add(storeItem4);
 
-            var storeItem5 = new StoreItem { Name = "CPU2", Catagory = cpuCatagory, Price = 2, Description = "This is CPU 2", Company = companies[1] };
+            var storeItem5 = new Product { Name = "CPU2", Catagory = cpuCatagory, Price = 2, Description = "This is CPU 2", Company = companies[1] };
             storeItems.Add(storeItem5);
 
-            var storeItem6 = new StoreItem { Name = "CPU3", Catagory = cpuCatagory, Price = 2, Description = "This is CPU 3", Company = companies[1] };
+            var storeItem6 = new Product { Name = "CPU3", Catagory = cpuCatagory, Price = 2, Description = "This is CPU 3", Company = companies[1] };
             storeItems.Add(storeItem6);
 
             var currentFolderPath = Assembly.GetEntryAssembly().Location;
@@ -64,7 +64,7 @@ namespace WebStore.Data
             };
             context.Images.Add(ramImage);
 
-            context.StoreItemImages.Add(new StoreItemImage { StoreItem = storeItem1, Image = ramImage });
+            context.ProductImages.Add(new ProductImage { Product = storeItem1, Image = ramImage });
 
             var cpuImage = new Image
             {
@@ -74,7 +74,7 @@ namespace WebStore.Data
             };
             context.Images.Add(cpuImage);
 
-            context.StoreItemImages.Add(new StoreItemImage { StoreItem = storeItem2, Image = cpuImage });
+            context.ProductImages.Add(new ProductImage { Product = storeItem2, Image = cpuImage });
 
             context.SaveChanges();
         }

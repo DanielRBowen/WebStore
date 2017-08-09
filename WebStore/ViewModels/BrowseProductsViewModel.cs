@@ -7,7 +7,7 @@ namespace WebStore.ViewModels
     {
         public IList<Catagory> Categories { get; set; }
 
-        public PaginatedList<StoreItem> Products { get; set; }
+        public PaginatedList<Product> Products { get; set; }
 
         public int? CategoryId { get; set; }
 

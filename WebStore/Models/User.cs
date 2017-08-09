@@ -22,6 +22,6 @@ namespace WebStore.Models
 
         public UserType UserType { get; set; }
 
-        public IList<StoreItem> Cart { get; set; } = new List<StoreItem>();
+        public IList<Product> Cart { get; set; } = new List<Product>();
     }
 }

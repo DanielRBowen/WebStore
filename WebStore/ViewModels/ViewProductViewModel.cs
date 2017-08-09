@@ -4,6 +4,6 @@ namespace WebStore.ViewModels
 {
     public class ViewProductViewModel
     {
-        public StoreItem Product { get; set; }
+        public Product Product { get; set; }
     }
 }

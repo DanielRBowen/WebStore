@@ -17,6 +17,6 @@ namespace WebStore.Models
 
         // Navigation properties
 
-        public ICollection<StoreItem> StoreItems { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

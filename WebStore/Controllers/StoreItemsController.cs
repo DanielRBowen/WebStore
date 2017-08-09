@@ -20,7 +20,7 @@ namespace WebStore.Controllers
         // GET: StoreItems
         public async Task<IActionResult> Index()
         {
-            var storeContext = _context.StoreItems.Include(s => s.Catagory).Include(s => s.Company);
+            var storeContext = _context.Products.Include(s => s.Catagory).Include(s => s.Company);
             return View(await storeContext.ToListAsync());
         }
 
@@ -32,7 +32,7 @@ namespace WebStore.Controllers
                 return NotFound();
             }
 
-            var storeItem = await _context.StoreItems
+            var storeItem = await _context.Products
                 .Include(s => s.Catagory)
                 .Include(s => s.Company)
                 .SingleOrDefaultAsync(m => m.Id == id);
@@ -57,7 +57,7 @@ namespace WebStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,CatagoryId,Description,CompanyId")] StoreItem storeItem)
+        public async Task<IActionResult> Create([Bind("Id,Name,Price,CatagoryId,Description,CompanyId")] Product storeItem)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace WebStore.Controllers
                 return NotFound();
             }
 
-            var storeItem = await _context.StoreItems.SingleOrDefaultAsync(m => m.Id == id);
+            var storeItem = await _context.Products.SingleOrDefaultAsync(m => m.Id == id);
             if (storeItem == null)
             {
                 return NotFound();
@@ -93,7 +93,7 @@ namespace WebStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,CatagoryId,Description,CompanyId")] StoreItem storeItem)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,CatagoryId,Description,CompanyId")] Product storeItem)
         {
             if (id != storeItem.Id)
             {
@@ -133,7 +133,7 @@ namespace WebStore.Controllers
                 return NotFound();
             }
 
-            var storeItem = await _context.StoreItems
+            var storeItem = await _context.Products
                 .Include(s => s.Catagory)
                 .Include(s => s.Company)
                 .SingleOrDefaultAsync(m => m.Id == id);
@@ -150,15 +150,15 @@ namespace WebStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var storeItem = await _context.StoreItems.SingleOrDefaultAsync(m => m.Id == id);
-            _context.StoreItems.Remove(storeItem);
+            var storeItem = await _context.Products.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Products.Remove(storeItem);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private bool StoreItemExists(int id)
         {
-            return _context.StoreItems.Any(e => e.Id == id);
+            return _context.Products.Any(e => e.Id == id);
         }
     }
 }

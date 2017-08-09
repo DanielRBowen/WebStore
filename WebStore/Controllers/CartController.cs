@@ -29,9 +29,9 @@ namespace WebStore.Controllers
             var productIds = shoppingCart.ProductIds;
 
             var productsQuery =
-                from storeItem in StoreContext.StoreItems
+                from storeItem in StoreContext.Products
                     .AsNoTracking()
-                    .Include(storeItem0 => storeItem0.StoreItemImages)
+                    .Include(storeItem0 => storeItem0.ProductImages)
                 select storeItem;
 
             productsQuery = productsQuery.Where(product => productIds.Contains(product.Id));

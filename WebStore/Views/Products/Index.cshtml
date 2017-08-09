@@ -43,7 +43,7 @@
                         <div class="media-left">
                             <a asp-action="View" asp-route-id="@product.Id">
                             @{
-                                var image = product.StoreItemImages.FirstOrDefault();
+                                var image = product.ProductImages.FirstOrDefault();
                             }
                             @if (image != null)
                             {

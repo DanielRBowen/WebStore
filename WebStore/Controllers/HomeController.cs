@@ -141,8 +141,8 @@ namespace WebStore.Controllers
             var shoppingCart = HttpContext.Session.Get<ShoppingCart>("ShoppingCart");
 
             var productIds = shoppingCart.ProductIds.ToList();
-            var productsTable = new List<StoreItem>();
-            productsTable = await _context.StoreItems.ToListAsync();
+            var productsTable = new List<Product>();
+            productsTable = await _context.Products.ToListAsync();
 
             foreach (var productId in productIds)
             {

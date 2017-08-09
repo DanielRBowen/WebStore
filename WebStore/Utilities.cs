@@ -4,7 +4,7 @@ using WebStore.Models;
 
 public class Utilities
 {
-    public static List<int> CalculateQuantities(List<StoreItem> products, IList<int> productIds)
+    public static List<int> CalculateQuantities(List<Product> products, IList<int> productIds)
     {
         var idGroups = productIds.GroupBy(n => n);
         //var idGroups = products.GroupBy(product => product.Id);
